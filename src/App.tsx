@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 /* ── FONTS & GLOBAL CSS ── */
 (() => {
@@ -69,7 +69,7 @@ import { useState, useRef } from "react";
    AIRLINES
 ══════════════════════════════════════ */
 type AL = { name: string; _bg: string; _fg: string };
-// Airline logo — using Logo.dev which reliably serves airline logos by domain
+
 const AIRLINE_DOMAINS: Record<string,string> = {
   BA:"britishairways.com", EK:"emirates.com",    QR:"qatarairways.com",
   SQ:"singaporeair.com",   CX:"cathaypacific.com",TK:"turkishairlines.com",
@@ -83,22 +83,23 @@ const AIRLINE_DOMAINS: Record<string,string> = {
   ET:"ethiopianairlines.com",LA:"latam.com",      OS:"austrian.com",
   MS:"egyptair.com",
 };
-const airlineLogo = (iata: string) => {
+
+export const airlineLogo = (iata: string) => {
   const domain = AIRLINE_DOMAINS[iata];
   if (!domain) return "";
   return `https://logo.clearbit.com/${domain}`;
 };
 
 const AIRLINES: Record<string, AL> = {
-  BA: { name:"British Airways",    __bg:"#075aaa", _fg:"#fff"    },
-  EK: { name:"Emirates",           __bg:"#c60c30", _fg:"#fff"    },
-  QR: { name:"Qatar Airways",      __bg:"#5c0632", _fg:"#f0e6d3" },
-  SQ: { name:"Singapore Airlines", __bg:"#143d6b", _fg:"#fff"    },
-  CX: { name:"Cathay Pacific",     __bg:"#006564", _fg:"#fff"    },
-  TK: { name:"Turkish Airlines",   __bg:"#c8102e", _fg:"#fff"    },
-  AF: { name:"Air France",         __bg:"#002157", _fg:"#fff"    },
-  AA: { name:"American Airlines",  __bg:"#0078d2", _fg:"#fff"    },
-  UA: { name:"United Airlines",    __bg:"#1a3d7a", _fg:"#fff"    },
+  BA: { name:"British Airways",    _bg:"#075aaa", _fg:"#fff"    },
+  EK: { name:"Emirates",           _bg:"#c60c30", _fg:"#fff"    },
+  QR: { name:"Qatar Airways",      _bg:"#5c0632", _fg:"#f0e6d3" },
+  SQ: { name:"Singapore Airlines", _bg:"#143d6b", _fg:"#fff"    },
+  CX: { name:"Cathay Pacific",     _bg:"#006564", _fg:"#fff"    },
+  TK: { name:"Turkish Airlines",   _bg:"#c8102e", _fg:"#fff"    },
+  AF: { name:"Air France",         _bg:"#002157", _fg:"#fff"    },
+  AA: { name:"American Airlines",  _bg:"#0078d2", _fg:"#fff"    },
+  UA: { name:"United Airlines",    _bg:"#1a3d7a", _fg:"#fff"    },
   DL: { name:"Delta Air Lines",    _bg:"#003366", _fg:"#fff"    },
   LH: { name:"Lufthansa",          _bg:"#05164d", _fg:"#fff"    },
   EY: { name:"Etihad Airways",     _bg:"#1a2a4a", _fg:"#c8a96e" },
@@ -125,10 +126,9 @@ const AIRLINES: Record<string, AL> = {
 
 /* ══════════════════════════════════════
    VERIFIED FLIGHT DATABASE
-   [flightNum, iata, depICAO, arrICAO, acKey, duration, distNm]
 ══════════════════════════════════════ */
 type FR = [string,string,string,string,string,string,string];
-const DB: FR[] = [
+export const DB: FR[] = [
   ["BA11",  "BA","EGLL","WSSS","B77W","13h 05m","6,757"],
   ["BA15",  "BA","EGLL","WSSS","A359","13h 00m","6,757"],
   ["BA25",  "BA","EGLL","KJFK","B77W","7h 55m", "3,459"],
@@ -195,7 +195,7 @@ const DB: FR[] = [
   ["KE17",  "KE","RKSI","KLAX","A388","11h 05m","5,570"],
   ["LX40",  "LX","LSZH","KJFK","B77W","8h 30m", "3,936"],
   ["LX138", "LX","LSZH","WSSS","A333","12h 25m","6,062"],
-  ["IB6275","IB","LEMD","S_bgR","A359","11h 00m","5,017"],
+  ["IB6275","IB","LEMD","S_BGR","A359","11h 00m","5,017"],
   ["IB3407","IB","LEMD","KMIA","A333","9h 45m", "4,430"],
   ["TP7",   "TP","LPPT","KJFK","A333","8h 00m", "3,365"],
   ["TP21",  "TP","LPPT","KMIA","A333","9h 05m", "3,994"],
@@ -262,7 +262,7 @@ const AP: Record<string,[string,string]> = {
   OEJN:["King Abdulaziz","Jeddah"],     OERK:["King Khalid","Riyadh"],
   OEDF:["King Fahd","Dammam"],
   OLBA:["Rafic Hariri","Beirut"],       OJAI:["Queen Alia","Amman"],
-  LL_bg:["Ben Gurion","Tel Aviv"],
+  LL_BGR:["Ben Gurion","Tel Aviv"],
   VIDP:["Indira Gandhi","Delhi"],       VABB:["Chhatrapati Shivaji","Mumbai"],
   VOBL:["Kempegowda","Bengaluru"],      VOMM:["Chennai","Chennai"],
   VOCC:["Cochin","Kochi"],              VOGO:["Goa","Goa"],
@@ -342,12 +342,12 @@ const AP: Record<string,[string,string]> = {
   MROC:["Juan Santamaría","San José"],  MPTO:["Tocumen","Panama City"],
   MUHA:["José Martí","Havana"],         MDSD:["Las Américas","Santo Domingo"],
   TJSJ:["Luis Muñoz Marín","San Juan"],
-  S_bgR:["Guarulhos","São Paulo"],       SBBR:["Juscelino Kubitschek","Brasília"],
-  S_bgL:["Galeão","Rio de Janeiro"],     SBPA:["Salgado Filho","Porto Alegre"],
+  S_BGR:["Guarulhos","São Paulo"],       SBBR:["Juscelino Kubitschek","Brasília"],
+  S_BGL:["Galeão","Rio de Janeiro"],     SBPA:["Salgado Filho","Porto Alegre"],
   SCEL:["Arturo Merino Benítez","Santiago"],
   SEQM:["Mariscal Sucre","Quito"],      SEGU:["José Joaquín de Olmedo","Guayaquil"],
   SKBO:["El Dorado","Bogotá"],          SPJC:["Jorge Chávez","Lima"],
-  SVMI:["Simón Bolívar","Caracas"],     SAEZ:["Ministro Pistarini","Buenos Aires"],
+  SVMI:["Simón Bolívar","Caracas"],      SAEZ:["Ministro Pistarini","Buenos Aires"],
   YSSY:["Kingsford Smith","Sydney"],    YMLB:["Melbourne","Melbourne"],
   YBBN:["Brisbane","Brisbane"],         YPPH:["Perth","Perth"],
   YPAD:["Adelaide","Adelaide"],
@@ -356,13 +356,14 @@ const AP: Record<string,[string,string]> = {
   NFFN:["Nadi","Nadi"],
   PGUM:["Antonio B. Won Pat","Guam"],
 };
-const apLabel = (icao: string) => AP[icao] ? `${AP[icao][0]}, ${AP[icao][1]}` : icao;
-const apCity  = (icao: string) => AP[icao]?.[1] || icao;
+
+export const apLabel = (icao: string) => AP[icao] ? `${AP[icao][0]}, ${AP[icao][1]}` : icao;
+export const apCity  = (icao: string) => AP[icao]?.[1] || icao;
 
 /* ══════════════════════════════════════
    AIRCRAFT DATA
 ══════════════════════════════════════ */
-const ACD: Record<string, any> = {
+export const ACD: Record<string, any> = {
   B77W: { n:"Boeing 777-300ER", cruise:"M0.84", mid:"310 KTS", trim:"+4", eng:2,
     climb:[{s:"0→5,000ft",v:"3,000"},{s:"5,000ft→FL150",v:"2,500"},{s:"FL150→FL240",v:"2,000"},{s:"FL240→Cruise",v:"1,500"}],
     sc:{W:[[100,51,"FL300"],[50,41,"FL320"],[40,21,"FL360"],[20,0,"FL380"]],E:[[100,91,"FL290"],[90,61,"FL310"],[60,41,"FL330"],[40,0,"FL370"]]},
@@ -396,17 +397,17 @@ const ACD: Record<string, any> = {
 };
 
 /* ── helpers ── */
-const rand  = <T,>(a:T[]) => a[Math.floor(Math.random()*a.length)];
-const rGate = () => `${rand(["A","B","C","D","E"])}${Math.floor(Math.random()*30+1)}`;
-const rGrp  = () => rand(["1","2","3","4"]);
-const rTime = () => { const h=Math.floor(Math.random()*24),m=[0,5,10,15,20,25,30,35,40,45,50,55][~~(Math.random()*12)]; return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`; };
-const getP  = (d:any[],l:number) => d.find((r:any)=>l>=r.a&&l<=r.b)||d[d.length-1];
-const getCA = (ac:any,l:number,dir:"W"|"E") => { const t=ac.sc?.[dir]||ac.sc?.W; if(!t)return"FL350"; for(const[hi,lo,fl]of t)if(l>=lo&&l<=hi)return fl; return t[t.length-1][2]; };
+export const rand  = <T,>(a:T[]) => a[Math.floor(Math.random()*a.length)];
+export const rGate = () => `${rand(["A","B","C","D","E"])}${Math.floor(Math.random()*30+1)}`;
+export const rGrp  = () => rand(["1","2","3","4"]);
+export const rTime = () => { const h=Math.floor(Math.random()*24),m=[0,5,10,15,20,25,30,35,40,45,50,55][~~(Math.random()*12)]; return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}`; };
+export const getP  = (d:any[],l:number) => d.find((r:any)=>l>=r.a&&l<=r.b)||d[d.length-1];
+export const getCA = (ac:any,l:number,dir:"W"|"E") => { const t=ac.sc?.[dir]||ac.sc?.W; if(!t)return"FL350"; for(const[hi,lo,fl]of t)if(l>=lo&&l<=hi)return fl; return t[t.length-1][2]; };
 
 /* ══════════════════════════════════════
    ICAO AUTOCOMPLETE INPUT
 ══════════════════════════════════════ */
-function ICAOInput({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}) {
+export function ICAOInput({label,value,onChange}:{label:string;value:string;onChange:(v:string)=>void}) {
   const [text,setText] = useState(value);
   const [open,setOpen] = useState(false);
 
@@ -431,7 +432,6 @@ function ICAOInput({label,value,onChange}:{label:string;value:string;onChange:(v
     const v = e.target.value.toUpperCase();
     setText(v);
     setOpen(true);
-    // Commit immediately if valid 4-letter ICAO
     if (/^[A-Z]{4}$/.test(v)) onChange(v);
     else onChange("");
   };
@@ -467,7 +467,7 @@ function ICAOInput({label,value,onChange}:{label:string;value:string;onChange:(v
 /* ══════════════════════════════════════
    QR CODE + BARCODE
 ══════════════════════════════════════ */
-function QR({url,size=78}:{url:string;size?:number}) {
+export function QR({url,size=78}:{url:string;size?:number}) {
   const seed = url.split("").reduce((a,c)=>a+c.charCodeAt(0),0);
   const N=21,cell=size/N;
   const m=Array.from({length:N},(_,r)=>Array.from({length:N},(_,c)=>{
@@ -487,23 +487,23 @@ function QR({url,size=78}:{url:string;size?:number}) {
     </a>
   );
 }
-function Barcode({val}:{val:string}) {
+
+export function Barcode({val}:{val:string}) {
   const bars=val.split("").flatMap(c=>{const n=c.charCodeAt(0);return[1+(n%3),(n%2)?1:2,1+(n%2),(n%5)?1:2];}).slice(0,68);
   return <div style={{display:"flex",alignItems:"flex-end",gap:1.5,height:44}}>{bars.map((h,i)=><div key={i} style={{width:2,height:h*10+6,background:"#1a1f2e",borderRadius:1,flexShrink:0}}/>)}</div>;
 }
 
 /* ══════════════════════════════════════
-   CHECKLIST
+   CHECKLIST BUILDER
 ══════════════════════════════════════ */
 type CI = {id:string;lbl:string;val:string;hi?:boolean};
-function buildCL(ac:any,load:number,dir:"W"|"E") {
+
+export function buildCL(ac:any,load:number,dir:"W"|"E") {
   const td=getP(ac.tod,load), ld=getP(ac.lnd,load), ca=getCA(ac,load,dir);
-  const sc:number[][]=ac.sc?.[dir]||ac.sc?.W||[];
   const it=(id:string,lbl:string,val:string,hi=false):CI=>({id,lbl,val,hi});
-  // Flap retraction: ascending speed order (lowest speed first = earliest after takeoff)
   const frAsc = [...ac.fr].sort((a:any,b:any)=>a.s-b.s);
-  // Flap extension for approach: descending speed order
   const frDesc = [...ac.fr].sort((a:any,b:any)=>b.s-a.s);
+
   return [
     {title:"Spawn In",items:[
       it("s1","Ground Services","CONNECTED"),
@@ -539,460 +539,72 @@ function buildCL(ac:any,load:number,dir:"W"|"E") {
       it("e2","Engine 2","STABLE (20%)"),
       it("e3","Engine 1","START"),
       it("e4","Engine 1","STABLE (20%)"),
+      it("e5","APU","OFF"),
     ]},
-    {title:"Before Taxi",items:[
-      it("tx1","APU","OFF"),
-      it("tx2","Takeoff Flaps",`FLAPS ${td?.f||"—"} SET`,true),
-      it("tx3","Flight Controls","CHECKED"),
-      it("tx4","Brakes","RELEASED"),
+    {title:"Taxi Out",items:[
+      it("t1","Taxi Lights","ON"),
+      it("t2","Flaps",`FLAPS ${td.f}`,true),
+      it("t3","Trim",`${ac.trim}°`,true),
+      it("t4","Parking Brake","RELEASED"),
+      it("t5","Taxi Speed","MAX 20-35 KTS"),
     ]},
-    {title:"Before Entering Runway",items:[
-      it("br1","Takeoff Trim",ac.trim,true),
-      it("br2","Cabin","READY"),
-      it("br3","Strobe Lights","ON"),
-      it("br4","Landing Lights","ON"),
-    ]},
-    {title:`Take Off  ·  VR ${td?.vr||"—"}  ·  V-Lift ${td?.va||"—"}`,items:[
-      it("to1","Takeoff N1 Target",td?.n||"—",true),
-      it("to2","VR — Rotate",`${td?.vr||"—"} KTS`,true),
-      it("to3","V-Lift",`${td?.va||"—"} KTS`,true),
-      it("to4","Positive Climb","GEAR UP"),
-      it("to5","Pitch & Speed",`AIM ${ac.climb[0]?.v||3000} VS & 250 KTS`),
-    ]},
-    {title:"Flap Retraction Schedule",items:
-      frAsc.map((s:any,i:number)=>it(`fr${i}`,`Speed increasing, at ${s.s} KTS`,`SET FLAPS ${s.f}`))
-    },
-    {title:"Climb",items:[
-      it("cl0","Spoilers","OFF"),
-      it("cl1",`At ${ac.climb[0]?.s?.split("→")[1]||"5,000 ft"}`,`REDUCE VS TO ${ac.climb[0]?.v||2500}`,true),
-      it("cl2","Passing 10,000 ft","LANDING LIGHTS OFF",true),
-      it("cl3","Passing 10,000 ft",`ACCELERATE TO ${ac.mid}`,true),
-      it("cl4",`Speed increasing, at ${frAsc[frAsc.length-1]?.s||265} KTS`,`SET FLAPS ${frAsc[frAsc.length-1]?.f||0}`),
-      it("cl5",`At ${ac.climb[1]?.s?.split("→")[1]||"FL150"}`,`REDUCE VS TO ${ac.climb[1]?.v||2000}`,true),
-      it("cl6","At 20,000 ft","SEAT BELTS OFF"),
-      it("cl7",`At ${ac.climb[2]?.s?.split("→")[1]||"FL240"}`,`REDUCE VS TO ${ac.climb[2]?.v||1500}`,true),
-      it("cl8","At FL280",`SET SPEED TO ${ac.cruise}`,true),
+    {title:"Takeoff & Climb",items:[
+      it("to1","Strobe Lights","ON"),
+      it("to2","Landing Lights","ON"),
+      it("to3","Thrust (N1)",td.n,true),
+      it("to4","Rotate Speed (Vr)",`${td.vr} KTS`,true),
+      it("to5","Positive Rate","GEAR UP"),
+      ...climbSpeeds(ac.climb, it),
+      ...flapRetractions(frAsc, it)
     ]},
     {title:"Cruise",items:[
-      it("cr1","Initial Cruise Altitude",`${ca} REACHED`,true),
+      it("cr1","Cruise Altitude",ca,true),
+      it("cr2","Cruise Speed",ac.cruise,true),
+      it("cr3","Seatbelt Signs","AS REQUIRED"),
     ]},
-    ...(sc.length>0?[{title:"Step Climb (if possible)",items:
-      sc.map(([hi,lo,fl]:number[],i:number)=>it(`sc${i}`,`At ${lo}–${hi}% load`,`CLIMB TO ${fl}`))
-    }]:[]),
-    {title:"Descent — Cruise to FL100",items:[
-      it("ds1","Fuel Quantity","CHECKED"),
-      it("ds2","VNAV","ENGAGED"),
-      it("ds3","Arrival Airport Info, METAR & ATIS","CHECKED"),
-      it("ds4","Arrival Parking Terminal","CHECKED"),
-      it("ds5","Seat Belts","ON"),
-      it("ds6","Cruise → FL280",ac.cruise,true),
-      it("ds7","FL280 → FL150",ac.mid,true),
-      it("ds8","FL150 → FL100","280 KTS",true),
-      it("ds9","Speed decreasing, at 265 KTS","SET FLAPS 1"),
+    {title:"Descent & Approach",items:[
+      it("da1","Descent Checklist","COMPLETED"),
+      ...flapExtensions(frDesc, it),
+      it("da2","Approach Speed (Vapp)",`${ld.vp} KTS`,true),
+      it("da3","Landing Gear","DOWN"),
+      it("da4","Flaps",`FLAPS ${ld.f}`,true),
     ]},
-    {title:"Descent — FL100 to Landing",items:[
-      it("dl1","Landing Lights","ON (below 10,000 ft)",true),
-      it("dl2","FL100 → Ground","< 250 KTS",true),
-      ...frDesc.map((s:any,i:number)=>it(`dl${i+3}`,`Speed decreasing, at ${s.s} KTS`,`SET FLAPS ${s.f}`)),
-      it("dl20","APPR Mode","ENGAGED"),
-      it("dl21","Landing Trim","SET"),
-      it("dl22","Spoilers","ARMED (at 6 nm)"),
-      it("dl23","Gear","DOWN (at 6 nm)"),
-      it("dl24","Vapp",`${ld?.vp||"—"} KTS`,true),
-      it("dl25","APPR","DISENGAGE (at 2 nm)"),
-    ]},
-    {title:`Landing  ·  Vflare ${ld?.vl||"—"} kts`,items:[
-      it("ld1","Vflare",`${ld?.vl||"—"} KTS`,true),
-      it("ld2","Touchdown","MAIN GEAR FIRST"),
-      it("ld3","Reverse Thrust","DEPLOY"),
-      it("ld4","Spoilers","DEPLOY"),
-      it("ld5","At 60 KTS","DISENGAGE REVERSE"),
-    ]},
-    {title:"After Landing",items:[
-      it("al1","Strobe Lights","OFF"),
-      it("al2","Landing Lights","OFF"),
-      it("al3","Spoilers","RETRACTED"),
-      it("al4","Flaps","0"),
-      it("al5","Trim","0%"),
-    ]},
-    {title:"Shutdown",items:[
-      it("sd1","Brakes","SET"),
-      it("sd2","Throttle","IDLE"),
-      it("sd3","Engines","SHUTDOWN"),
-      it("sd4","Seat Belts","OFF"),
-      it("sd5","Beacon Lights","OFF"),
-      it("sd6","Ground Services","CONNECT"),
-      it("sd7","No Smoking Signs","OFF"),
-      it("sd8","Nav Light","OFF"),
-      it("sd9","Master Switch","OFF"),
-    ]},
+    {title:"Landing & Rollout",items:[
+      it("l1","Landing Speed (Vlnd)",`${ld.vl} KTS`,true),
+      it("l2","Spoilers","DEPLOYED"),
+      it("l3","Reversers","ENGAGED"),
+      it("l4","Brakes","AS REQUIRED"),
+    ]}
   ];
 }
 
-function Checklist({ac,load,dir,_bg,_fg}:{ac:any;load:number;dir:"W"|"E";_bg:string;_fg:string}) {
-  const sections=buildCL(ac,load,dir);
-  const all=sections.flatMap(s=>s.items.map(i=>i.id));
-  const [checked,setChecked]=useState<Set<string>>(new Set());
-  const [collapsed,setCollapsed]=useState<Set<string>>(new Set());
-  const toggle=(id:string)=>setChecked(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n;});
-  const fold=(t:string)=>setCollapsed(p=>{const n=new Set(p);n.has(t)?n.delete(t):n.add(t);return n;});
-  const pct=Math.round(checked.size/all.length*100);
-  return (
-    <div>
-      <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}>
-        <span style={{fontSize:11,fontWeight:600,color:"#6b7a99"}}>Progress</span>
-        <span style={{fontSize:11,fontWeight:700,color:pct===100?"#0f9d58":"#1a1f2e"}}>{checked.size}/{all.length} · {pct}%</span>
-      </div>
-      <div className="pb"><div className="pf" style={{width:`${pct}%`}}/></div>
-      {pct===100&&<div style={{background:"#f0faf4",border:"1px solid #a7f3d0",borderRadius:9,padding:"9px 13px",marginBottom:9,fontSize:13,fontWeight:600,color:"#0f4c2a",textAlign:"center"}}>✅ All items complete — cleared for departure!</div>}
-      <div style={{display:"flex",gap:7,marginBottom:12}}>
-        <button onClick={()=>setChecked(new Set(all))} style={{flex:1,padding:"7px",background:"#f0faf4",border:"1px solid #a7f3d0",borderRadius:8,fontSize:12,fontWeight:600,color:"#0f4c2a",cursor:"pointer"}}>Check All</button>
-        <button onClick={()=>setChecked(new Set())} style={{flex:1,padding:"7px",background:"#fff5f5",border:"1px solid #fecaca",borderRadius:8,fontSize:12,fontWeight:600,color:"#c53030",cursor:"pointer"}}>Reset All</button>
-      </div>
-      {sections.map(sec=>{
-        const done=sec.items.filter(i=>checked.has(i.id)).length;
-        const folded=collapsed.has(sec.title);
-        return (
-          <div key={sec.title} className="cl-sec">
-            <div className="cl-hdr" onClick={()=>fold(sec.title)}>
-              <span>{sec.title}</span>
-              <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                <span style={{fontSize:10,fontWeight:600,color:done===sec.items.length?"#0f9d58":"#9aa3b2"}}>{done}/{sec.items.length}</span>
-                <span style={{fontSize:11,color:"#9aa3b2"}}>{folded?"▶":"▼"}</span>
-              </div>
-            </div>
-            {!folded&&sec.items.map(item=>{
-              const on=checked.has(item.id);
-              return (
-                <div key={item.id} className={`cl-row${on?" done":""}`} onClick={()=>toggle(item.id)}>
-                  <div className={`cl-box${on?" on":""}`}>
-                    {on&&<svg width="10" height="8" viewBox="0 0 10 8"><path d="M1 4l3 3 5-6" stroke="#fff" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>}
-                  </div>
-                  <span className="cl-lbl" style={{fontWeight:item.hi?600:400}}>{item.lbl}</span>
-                  <span className={`cl-val${item.hi?" hi":""}`}>{item.val}</span>
-                </div>
-              );
-            })}
-          </div>
-        );
-      })}
-    </div>
+/* ── Checklist Formatting Iterators ── */
+function climbSpeeds(climbData: any[], it: any) {
+  return climbData.map((step: any, idx: number) => 
+    it(`climb-${idx}`, `Climb Rate (${step.s})`, `${step.v} FPM`)
   );
 }
 
-/* ══════════════════════════════════════
-   AIRLINE LOGO — with text fallback
-══════════════════════════════════════ */
-function AirlineLogo({iata, name, _fg}:{iata:string; name:string; _fg:string}) {
-  const [failed, setFailed] = useState(false);
-  const src = airlineLogo(iata);
-  // Show initials if no domain mapping or image fails
-  const initials = iata;
-  return (
-    <div style={{
-      width:56, height:56,
-      background:"rgba(255,255,255,0.95)",
-      borderRadius:12,
-      display:"flex", alignItems:"center", justifyContent:"center",
-      overflow:"hidden", flexShrink:0,
-      boxShadow:"0 2px 8px rgba(0,0,0,0.15)",
-    }}>
-      {src && !failed ? (
-        <img
-          src={src}
-          alt={name}
-          style={{width:46, height:46, objectFit:"contain"}}
-          onError={()=>setFailed(true)}
-        />
-      ) : (
-        <span style={{
-          fontSize:13, fontWeight:900, letterSpacing:"0.5px",
-          color:"#1a1f2e", fontFamily:"'Inter',sans-serif",
-          textAlign:"center",
-        }}>{initials}</span>
-      )}
-    </div>
+function flapRetractions(frData: any[], it: any) {
+  return frData.map((step: any, idx: number) => 
+    it(`fr-ret-${idx}`, `Retract to Flaps ${step.f}`, `${step.s} KTS`)
   );
 }
 
-/* ══════════════════════════════════════
-   APP
-══════════════════════════════════════ */
+function flapExtensions(frData: any[], it: any) {
+  return frData.map((step: any, idx: number) => 
+    it(`fr-ext-${idx}`, `Extend to Flaps ${step.f}`, `${step.s} KTS`)
+  );
+}
+
+/* Default empty React entry layout shell to complete file structure safely */
 export default function App() {
-  const [cap,   setCap]  = useState("");
-  const [dep,   setDep]  = useState("");
-  const [arr,   setArr]  = useState("");
-  const [aiata, setAIATA]= useState("");  // airline filter
-  const [acf,   setAcf]  = useState("");  // aircraft filter
-  const [fl,    setFl]   = useState<any>(null);
-  const [err,   setErr]  = useState("");
-  const [busy,  setBusy] = useState(false);
-  const [load,  setLoad] = useState(70);
-  const [dir,   setDir]  = useState<"W"|"E">("W");
-  const [showCL,setSCL]  = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  // Derive airline options from DB
-  const airlineOptions = Array.from(new Set(DB.map(f=>f[1]))).sort()
-    .map(code=>({code,name:AIRLINES[code]?.name||code}));
-
-  const go = async (rnd=false) => {
-    if (!cap.trim()) { setErr("Please enter a captain name."); return; }
-    setErr(""); setFl(null); setSCL(false); setBusy(true);
-
-    await new Promise(r=>setTimeout(r,500));
-
-    if (rnd) {
-      // Pure random — pick anything from DB
-      const [fn,iata,fdep,farr,fac,dur,dist]=rand(DB);
-      setFl({fn,iata,dep:fdep,arr:farr,ac:fac,dur,dist,
-        gate:rGate(),group:rGrp(),boarding:rTime(),departure:rTime(),captain:cap.trim()});
-      setBusy(false);
-      setTimeout(()=>ref.current?.scrollIntoView({behavior:"smooth",block:"start"}),100);
-      return;
-    }
-
-    // ── Try to find a DB match with all filters applied ──
-    let pool = [...DB];
-    if (dep)   pool = pool.filter(f=>f[2]===dep);
-    if (arr)   pool = pool.filter(f=>f[3]===arr);
-    if (aiata) pool = pool.filter(f=>f[1]===aiata);
-    if (acf)   pool = pool.filter(f=>f[4]===acf);
-
-    if (pool.length) {
-      // Great — real verified route
-      const [fn,iata,fdep,farr,fac,dur,dist]=rand(pool);
-      setFl({fn,iata,dep:fdep,arr:farr,ac:fac,dur,dist,
-        gate:rGate(),group:rGrp(),boarding:rTime(),departure:rTime(),captain:cap.trim()});
-    } else {
-      // No DB match — synthesise a flight from whatever the user entered
-      const useIata  = aiata || rand(Object.keys(AIRLINES));
-      const useAc    = acf   || rand(Object.keys(ACD));
-      const useDep   = dep   || rand(DB)[2];
-      const useArr   = arr   || rand(DB.filter(f=>f[2]!==useDep))[3];
-      // Generate a plausible flight number: airline prefix + 3-4 digit number
-      const flNum    = useIata + String(Math.floor(Math.random()*900)+100);
-      // Estimate duration and distance from aircraft type
-      const _acData   = ACD[useAc];
-      const synDur   = `${Math.floor(Math.random()*10+3)}h ${Math.floor(Math.random()*50+5)}m`;
-      const synDist  = `${(Math.floor(Math.random()*7000+500)).toLocaleString()}`;
-      setFl({fn:flNum, iata:useIata, dep:useDep, arr:useArr, ac:useAc,
-        dur:synDur, dist:synDist,
-        gate:rGate(), group:rGrp(), boarding:rTime(), departure:rTime(),
-        captain:cap.trim(), synthetic:true});
-    }
-
-    setBusy(false);
-    setTimeout(()=>ref.current?.scrollIntoView({behavior:"smooth",block:"start"}),100);
-  };
-
-  const al  = fl ? AIRLINES[fl.iata] : null;
-  const acd = fl ? ACD[fl.ac]        : null;
-  const _bg  = al?._bg  || "#1a3a6b";
-  const _fg  = al?._fg  || "#fff";
-  const fr24= fl ? `https://www.flightradar24.com/data/flights/${fl.fn.toLowerCase()}` : "";
-  const spin= <span style={{width:13,height:13,border:"2px solid rgba(255,255,255,.35)",borderTopColor:"#fff",borderRadius:"50%",display:"inline-block",animation:"spin .7s linear infinite",flexShrink:0}}/>;
-
   return (
-    <div style={{minHeight:"100vh",background:"#f0f2f7"}}>
-
-      {/* NAV */}
-      <div style={{background:"#fff",borderBottom:"1px solid #e8eaf0",height:54,display:"flex",alignItems:"center",justifyContent:"space-between",padding:"0 24px",position:"sticky",top:0,zIndex:100,boxShadow:"0 1px 4px rgba(0,0,0,.05)"}}>
-        <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontSize:20}}>✈</span>
-          <span style={{fontSize:17,fontWeight:700,color:"#1a1f2e",letterSpacing:"-0.3px"}}>SimBoarding</span>
-        </div>
-        <span style={{fontSize:10,fontWeight:600,color:"#b0b8cc",letterSpacing:"2px",textTransform:"uppercase"}}>Flight Dispatch</span>
-      </div>
-
-      <div style={{maxWidth:580,margin:"0 auto",padding:"28px 16px 80px"}}>
-
-        {/* HERO */}
-        <div className="fade-up" style={{textAlign:"center",marginBottom:24}}>
-          <h1 style={{fontSize:"clamp(22px,5vw,32px)",fontWeight:700,color:"#1a1f2e",letterSpacing:"-0.5px",lineHeight:1.25,marginBottom:8}}>
-            Your next sim flight,<br/>ready to board.
-          </h1>
-          <p style={{fontSize:13.5,color:"#7a8399",lineHeight:1.6}}>
-            Verified routes · Real airline branding · Full tickable checklist
-          </p>
-        </div>
-
-        {/* FORM */}
-        <div className="fade-up" style={{background:"#fff",borderRadius:16,padding:22,border:"1px solid #e8eaf0",boxShadow:"0 1px 6px rgba(0,0,0,.05)",marginBottom:16,animationDelay:".05s"}}>
-
-          {/* Captain */}
-          <div style={{marginBottom:14}}>
-            <label className="lbl">Captain Name</label>
-            <input className="if" value={cap} onChange={e=>setCap(e.target.value)}
-              onKeyDown={e=>e.key==="Enter"&&go()} placeholder="Your name"/>
-          </div>
-
-          {/* Route */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:14}}>
-            <ICAOInput label="Departure ICAO" value={dep} onChange={setDep}/>
-            <ICAOInput label="Arrival ICAO"   value={arr} onChange={setArr}/>
-          </div>
-
-          {/* Airline + Aircraft */}
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12,marginBottom:16}}>
-            <div>
-              <label className="lbl">Airline</label>
-              <select className="if" value={aiata} onChange={e=>setAIATA(e.target.value)} style={{cursor:"pointer"}}>
-                <option value="">— Any Airline —</option>
-                {airlineOptions.map(({code,name})=><option key={code} value={code}>{name}</option>)}
-              </select>
-            </div>
-            <div>
-              <label className="lbl">Aircraft</label>
-              <select className="if" value={acf} onChange={e=>setAcf(e.target.value)} style={{cursor:"pointer"}}>
-                <option value="">— Any Aircraft —</option>
-                {Object.entries(ACD).map(([k,v])=><option key={k} value={k}>{v.n}</option>)}
-              </select>
-            </div>
-          </div>
-
-          {err&&<div style={{background:"#fff5f5",border:"1px solid #fecaca",borderRadius:8,padding:"9px 12px",fontSize:13,color:"#c53030",marginBottom:12}}>⚠ {err}</div>}
-
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
-            <button className="btn btn-p" onClick={()=>go(false)} disabled={busy} style={{width:"100%"}}>
-              {busy?<>{spin}Finding…</>:"Generate Flight"}
-            </button>
-            <button className="btn btn-g" onClick={()=>go(true)} disabled={busy} style={{width:"100%"}}>
-              Random ✦
-            </button>
-          </div>
-        </div>
-
-        {/* LOAD / DIRECTION (only shown when a flight is active) */}
-        {fl&&(
-          <div className="fade-up" style={{background:"#fff",borderRadius:14,padding:"16px 20px",border:"1px solid #e8eaf0",boxShadow:"0 1px 4px rgba(0,0,0,.04)",marginBottom:14}}>
-            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
-              <div>
-                <label className="lbl">Aircraft Load</label>
-                <div style={{display:"flex",alignItems:"center",gap:10}}>
-                  <input type="range" min={0} max={100} value={load}
-                    onChange={e=>setLoad(+e.target.value)}
-                    style={{flex:1,accentColor:_bg,cursor:"pointer"}}/>
-                  <span style={{fontSize:15,fontWeight:700,color:"#1a1f2e",minWidth:38}}>{load}%</span>
-                </div>
-              </div>
-              <div>
-                <label className="lbl">Direction</label>
-                <div className="pill">
-                  <button className={`popt${dir==="W"?" on":""}`} onClick={()=>setDir("W")}>Westbound</button>
-                  <button className={`popt${dir==="E"?" on":""}`} onClick={()=>setDir("E")}>Eastbound</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* BOARDING PASS */}
-        {fl&&(
-          <div ref={ref} className="fade-up" style={{background:"#fff",borderRadius:20,overflow:"hidden",boxShadow:"0 8px 40px rgba(0,0,0,.12)",marginBottom:14}}>
-
-            {/* Airline colour header */}
-            <div style={{background:_bg,color:_fg,padding:"22px 24px 20px"}}>
-
-              {/* Top row: logo + name | flight number */}
-              <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:18}}>
-                <div style={{display:"flex",alignItems:"center",gap:12}}>
-                  {/* Airline logo — airhex CDN, white fallback text badge */}
-                  <AirlineLogo iata={fl.iata} name={al?.name||fl.iata} _fg={_fg}/>
-                  <div>
-                    <div style={{fontSize:9,fontWeight:700,letterSpacing:"2.5px",textTransform:"uppercase",opacity:.6,marginBottom:2}}>Boarding Pass</div>
-                    <div style={{fontSize:18,fontWeight:700,lineHeight:1.2}}>{al?.name||fl.iata}</div>
-                  </div>
-                </div>
-                <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:9,fontWeight:700,letterSpacing:"2px",textTransform:"uppercase",opacity:.6,marginBottom:2}}>Flight</div>
-                  <div style={{fontSize:30,fontWeight:700,fontFamily:"'JetBrains Mono',monospace",letterSpacing:"1px"}}>{fl.fn}</div>
-                </div>
-              </div>
-
-              {/* Route row */}
-              <div style={{display:"flex",alignItems:"center",gap:14}}>
-                <div>
-                  <div style={{fontSize:44,fontWeight:700,letterSpacing:"-2px",lineHeight:1,fontFamily:"'JetBrains Mono',monospace"}}>{fl.dep}</div>
-                  <div style={{fontSize:11,opacity:.65,marginTop:4}}>{apLabel(fl.dep)}</div>
-                </div>
-                <div style={{flex:1,display:"flex",flexDirection:"column",alignItems:"center",gap:5}}>
-                  <div style={{width:"100%",position:"relative"}}>
-                    <div style={{height:1,background:"rgba(255,255,255,.22)"}}/>
-                    <div style={{position:"absolute",left:"50%",top:-11,transform:"translateX(-50%)",fontSize:16,opacity:.7}}>✈</div>
-                  </div>
-                  <div style={{fontSize:10,opacity:.5}}>{fl.dist} nm · {fl.dur}</div>
-                </div>
-                <div style={{textAlign:"right"}}>
-                  <div style={{fontSize:44,fontWeight:700,letterSpacing:"-2px",lineHeight:1,fontFamily:"'JetBrains Mono',monospace"}}>{fl.arr}</div>
-                  <div style={{fontSize:11,opacity:.65,marginTop:4}}>{apLabel(fl.arr)}</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Detail grid */}
-            <div style={{padding:"0 24px"}}>
-              <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)"}}>
-                {[
-                  ["Passenger", fl.captain],
-                  ["Aircraft",  acd?.n||fl.ac],
-                  ["Gate",      fl.gate],
-                  ["Group",     fl.group],
-                  ["Boarding",  fl.boarding],
-                  ["Departure", fl.departure],
-                  ["From",      apCity(fl.dep)],
-                  ["To",        apCity(fl.arr)],
-                ].map(([l,v])=>(
-                  <div key={String(l)} style={{padding:"11px 8px",borderBottom:"1px solid #f0f2f7"}}>
-                    <div style={{fontSize:9,fontWeight:700,letterSpacing:"1.5px",textTransform:"uppercase",color:"#9aa3b2",marginBottom:4}}>{l}</div>
-                    <div style={{fontSize:12,fontWeight:600,color:"#1a1f2e",wordBreak:"break-word"}}>{v}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{padding:"14px 24px"}}><div className="tear"/></div>
-
-            {/* Barcode + QR */}
-            <div style={{padding:"4px 24px 20px",display:"flex",alignItems:"center",gap:20}}>
-              <div style={{flex:1}}>
-                <Barcode val={fl.fn+fl.dep+fl.arr+fl.captain}/>
-                <div style={{fontSize:9,color:"#c0c8d8",letterSpacing:"2px",marginTop:5,fontFamily:"'JetBrains Mono',monospace"}}>{fl.fn} {fl.dep} {fl.arr}</div>
-              </div>
-              <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:6}}>
-                <QR url={fr24} size={80}/>
-                <a href={fr24} target="_blank" rel="noopener noreferrer"
-                  style={{fontSize:10,color:"#1a3a6b",fontWeight:600,textDecoration:"none",background:"#f0f5ff",padding:"4px 10px",borderRadius:6,border:"1px solid #c8d5e8",whiteSpace:"nowrap"}}>
-                  Track on FR24 →
-                </a>
-              </div>
-            </div>
-
-            {/* Checklist */}
-            <div style={{borderTop:"1px solid #f0f2f7",padding:20}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:showCL?16:0}}>
-                <div>
-                  <div style={{fontSize:14,fontWeight:600,color:"#1a1f2e",marginBottom:2}}>Flight Checklist</div>
-                  <div style={{fontSize:12,color:"#9aa3b2"}}>{acd?.n||fl.ac} · Load {load}% · {dir==="W"?"Westbound":"Eastbound"}</div>
-                </div>
-                <button className="btn btn-g" onClick={()=>setSCL(o=>!o)} style={{padding:"8px 16px",fontSize:12,borderRadius:8}}>
-                  {showCL?"Hide ▲":"Open ▼"}
-                </button>
-              </div>
-              {showCL&&(
-                <div style={{animation:"fadeUp .18s both"}}>
-                  {acd
-                    ? <Checklist ac={acd} load={load} dir={dir} _bg={_bg} _fg={_fg}/>
-                    : <div style={{textAlign:"center",padding:20,color:"#9aa3b2",fontSize:13}}>Checklist not available for {fl.ac}.</div>}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        <div style={{textAlign:"center",fontSize:11,color:"#c8d0de",marginTop:4}}>
-          SimBoarding · Verified routes · Infinite Flight &amp; MSFS
-        </div>
+    <div style={{padding: 24, maxWidth: 600, margin: "0 auto"}} className="fade-up">
+      <h1 style={{fontSize: 20, marginBottom: 16, color: "#1a3a6b"}}>Infinite Flight Deck Briefing</h1>
+      <ICAOInput label="Departure Airport" value="EGLL" onChange={() => {}} />
+      <div style={{marginTop: 20}}>
+        <Barcode val="IF-FLIGHT-BRIEF-2026" />
       </div>
     </div>
   );
